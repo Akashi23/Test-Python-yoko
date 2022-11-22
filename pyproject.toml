@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "test-python-yoko"
+version = "0.1.0"
+description = ""
+authors = ["Diniyar <d.zhagparov@galamat.biz>"]
+readme = "README.md"
+packages = [{include = "test_python_yoko"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.87.0"
+uvicorn = "^0.20.0"
+SQLAlchemy = "^1.4.44"
+strawberry-graphql = {extras = ["fastapi"], version = "^0.142.2"}
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = "^1.7.4"
+pydantic = {extras = ["email"], version = "^1.10.2"}
+python-dotenv = "^0.21.0"
+psycopg2 = "^2.9.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
