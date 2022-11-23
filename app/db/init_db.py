@@ -16,6 +16,7 @@ def init_db(db: Session) -> None:
             email=settings.FIRST_SUPERUSER,
             password=settings.FIRST_SUPERUSER_PASSWORD,
             is_superuser=True,
-            phone_number='87771112233'
+            phone_number='87771112233',
+            type='superadmin',
         )
         user_obj = user.create(db, obj_in=user_in) 

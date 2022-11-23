@@ -7,13 +7,15 @@ from sqlalchemy.orm import Session
 
 import models, schemas
 from crud import crud_user 
+from crud import crud_client
+from crud import crud_worker
 from api import deps
 from core.config import settings
 
 router = APIRouter()
 
 
-@router.get("/", response_model=List[schemas.User])
+@router.get("", response_model=List[schemas.User])
 def read_users(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
@@ -27,12 +29,12 @@ def read_users(
     return users
 
 
-@router.post("/", response_model=schemas.User)
+@router.post("", response_model=schemas.User)
 def create_user(
     *,
     db: Session = Depends(deps.get_db),
     user_in: schemas.UserCreate,
-    current_user: models.User = Depends(deps.get_current_active_superuser),
+    # current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
     """
     Create new user.
@@ -43,9 +45,17 @@ def create_user(
             status_code=400,
             detail="The user with this username already exists in the system.",
         )
-    user = crud_user.user.create(db, obj_in=user_in)
     
+    user = crud_user.user.create(db, obj_in=user_in)
 
+    if user_in.type == 'worker':
+        worker = schemas.WorkerCreate.parse_obj({'user_id': user.id, 'store_id': user_in.store_id})
+        crud_worker.worker.create(db, obj_in=worker)
+
+    else:
+        client = schemas.ClientCreate.parse_obj({'user_id': user.id, 'store_id': user_in.store_id})
+        crud_client.client.create(db, obj_in=client)
+    
     return user
 
 

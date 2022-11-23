@@ -6,10 +6,12 @@ from pydantic import BaseModel
 # Shared properties
 class ClientBase(BaseModel):
     user_id: Optional[int]
+    store_id: Optional[int]
 
 
 class ClientCreate(ClientBase):
     user_id: int
+    store_id: int
 
 
 class ClientUpdate(ClientBase):
@@ -19,6 +21,7 @@ class ClientUpdate(ClientBase):
 class ClientInDBBase(ClientBase):
     id: int
     user_id: str
+    store_id: int
 
     class Config:
         orm_mode = True

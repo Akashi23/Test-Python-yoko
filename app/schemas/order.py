@@ -1,20 +1,20 @@
 from typing import Optional
-from datetime import date
+from datetime import date, datetime
 
 from pydantic import BaseModel
 
 
 # Shared properties
 class OrderBase(BaseModel):
-    created: Optional[date]
-    ended: Optional[date]
+    created: Optional[datetime]
+    ended: Optional[datetime]
     where: Optional[int]
     author: Optional[int]
     status: Optional[str]
     executor: Optional[int]
 
 class OrderCreate(OrderBase):
-    ended: date
+    ended: datetime
     where: int
     author: int
     status: str
@@ -27,8 +27,8 @@ class OrderUpdate(OrderBase):
 
 class OrderInDBBase(OrderBase):
     id: int
-    created: date
-    ended: date
+    created: datetime
+    ended: datetime
     where: int
     author: int
     status: str

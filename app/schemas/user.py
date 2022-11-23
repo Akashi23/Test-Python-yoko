@@ -10,6 +10,8 @@ class UserBase(BaseModel):
     is_active: Optional[bool] = True
     is_superuser: bool = False
     full_name: Optional[str] = None
+    type: Optional[str] = None
+
 
 
 # Properties to receive via API on creation
@@ -17,11 +19,12 @@ class UserCreate(UserBase):
     email: EmailStr
     phone_number: str
     password: str
-    
-
-class UserTypeCreate(UserBase):
     type: str
     store_id: Optional[int] = None
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
 
 
 # Properties to receive via API on update

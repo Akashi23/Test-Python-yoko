@@ -18,26 +18,26 @@ class CRUDVisit(CRUDBase[Visit, VisitCreate, VisitUpdate]):
         db.refresh(db_obj)
         return db_obj
 
-    def get_visit_by_executor(
+    def validate_order_to_visit(self, db: Session, *, order_id: int) -> bool:
+        visit: Visit = (db.query(self.model)
+                .filter(Visit.order_id == order_id)
+                .first())
+        
+        if not visit:
+            return False
+        return True
+
+
+    def get_visits(
         self, db: Session, *, executor: int, skip: int = 0, limit: int = 100
     ) -> List[Visit]:
         return (
             db.query(self.model)
-            .filter(Visit.executor == executor)
             .offset(skip)
             .limit(limit)
             .all()
         )
 
-    def get_visit_by_order_id(
-        self, db: Session, *, order_id: int, skip: int = 0, limit: int = 100
-    ) -> List[Visit]:
-        return (
-            db.query(self.model)
-            .filter(Visit.order_id == order_id)
-            .offset(skip)
-            .limit(limit)
-            .all()
-        )
+
 
 visit = CRUDVisit(Visit)

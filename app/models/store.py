@@ -7,3 +7,4 @@ class Store(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     workers = relationship("Worker", back_populates="store")
+    clients = relationship("Client", back_populates="store")

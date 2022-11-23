@@ -1,12 +1,12 @@
 from typing import Optional
-from datetime import date
+from datetime import date, datetime
 
 from pydantic import BaseModel
 
 
 # Shared properties
 class VisitBase(BaseModel):
-    created: Optional[date]
+    created: Optional[datetime]
     executor: Optional[int]
     order_id: Optional[int]
     where: Optional[int]
@@ -23,7 +23,7 @@ class VisitUpdate(VisitBase):
 
 class VisitInDBBase(VisitBase):
     id: int
-    created: date
+    created: datetime
     executor: int
     order_id: int
     where: int
