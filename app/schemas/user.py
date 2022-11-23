@@ -17,6 +17,11 @@ class UserCreate(UserBase):
     email: EmailStr
     phone_number: str
     password: str
+    
+
+class UserTypeCreate(UserBase):
+    type: str
+    store_id: Optional[int] = None
 
 
 # Properties to receive via API on update
