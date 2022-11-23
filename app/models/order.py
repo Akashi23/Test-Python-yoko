@@ -1,5 +1,3 @@
-from typing import TYPE_CHECKING
-
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -12,5 +10,6 @@ class Order(Base):
     ended = Column(DateTime, nullable=False)
     where = Column(Integer, ForeignKey("store.id"), nullable=False)
     author = Column(Integer, ForeignKey("client.id"), nullable=False)
-    # status = Column(Integer, ForeignKey("store.id"))
+    status = Column(String)
     executor = Column(Integer, ForeignKey("worker.id"), nullable=False)
+    visit = relationship("Visit", back_populates="order", uselist=False)

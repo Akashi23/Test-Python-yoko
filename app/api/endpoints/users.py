@@ -44,6 +44,7 @@ def create_user(
             detail="The user with this username already exists in the system.",
         )
     user = crud_user.user.create(db, obj_in=user_in)
+    
 
     return user
 
