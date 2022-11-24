@@ -38,6 +38,25 @@ WORKDIR $PYSETUP_PATH
 COPY ./poetry.lock ./pyproject.toml ./
 RUN poetry install --no-root
 
+# FROM python-base as development
+# ENV FASTAPI_ENV=development
+
+# COPY --from=builder-base $POETRY_HOME $POETRY_HOME
+# COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
+
+# COPY docker-entrypoint.sh /docker-entrypoint.sh
+# RUN chmod +x /docker-entrypoint.sh
+
+# WORKDIR $PYSETUP_PATH
+# RUN poetry install
+
+# WORKDIR /app
+# COPY . .
+
+# EXPOSE 8000
+# ENTRYPOINT /docker-entrypoint.sh $0 $@
+# CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8000", "main:app"]
+
 
 # 'production' stage uses the clean 'python-base' stage and copyies
 # in only our runtime deps that were installed in the 'builder-base'
@@ -45,7 +64,7 @@ FROM python-base AS production
 ENV FASTAPI_ENV=production
 
 COPY --from=builder-base $VENV_PATH $VENV_PATH
-COPY gunicorn_conf.py /gunicorn_conf.py
+# COPY gunicorn_conf.py /gunicorn_conf.py
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
@@ -58,4 +77,4 @@ USER poetry
 WORKDIR /app
 
 ENTRYPOINT /docker-entrypoint.sh $0 $@
-CMD [ "gunicorn", "--worker-class uvicorn.workers.UvicornWorker", "api.api:api_router"]
+CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8080", "api.api:api_router"]
