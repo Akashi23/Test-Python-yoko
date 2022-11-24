@@ -58,4 +58,4 @@ USER poetry
 WORKDIR /app
 
 ENTRYPOINT /docker-entrypoint.sh $0 $@
-CMD [ "gunicorn", "--worker-class uvicorn.workers.UvicornWorker", "--config /gunicorn_conf.py", "api.api:api_router"]
+CMD [ "gunicorn", "--worker-class uvicorn.workers.UvicornWorker", "api.api:api_router"]
