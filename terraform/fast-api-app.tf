@@ -39,15 +39,15 @@ resource "digitalocean_app" "yoko-test-api" {
       value = "postgres"
     }
 
-    routes {
-        path = "/api"
-      }
-
     service {
       name               = "yoko-test-api"
       instance_count     = 1
       instance_size_slug = "basic-xxs"
       http_port          = 8080
+
+      routes {
+        path = "/api"
+      }
 
       image {
         registry_type = "DOCR"
