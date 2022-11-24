@@ -24,6 +24,8 @@ RUN buildDeps="build-essential" \
         curl \
         vim \
         netcat \
+        python3-dev \
+        libpq-dev \
     && apt-get install -y --no-install-recommends $buildDeps \
     && rm -rf /var/lib/apt/lists/*
 
@@ -34,7 +36,7 @@ RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=${POETRY_HOME} pyt
 
 WORKDIR $PYSETUP_PATH
 COPY ./poetry.lock ./pyproject.toml ./
-RUN poetry install --only main  # respects
+RUN poetry install --no-root
 
 FROM python-base as development
 ENV FASTAPI_ENV=development
@@ -75,4 +77,4 @@ USER poetry
 WORKDIR /app
 
 ENTRYPOINT /docker-entrypoint.sh $0 $@
-CMD [ "gunicorn", "--worker-class uvicorn.workers.UvicornWorker", "--config /gunicorn_conf.py", "main:app"]
+CMD [ "gunicorn", "--worker-class uvicorn.workers.UvicornWorker", "--config /gunicorn_conf.py", "api.api:api_router"]
