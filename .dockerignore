@@ -6,3 +6,4 @@ LICENSE
 .gitignore
 .github
 Footer
+Tests.postman_collection.json
