@@ -1,20 +1,7 @@
-terraform {
-  backend "s3" {
-    endpoint                = "fra1.digitaloceanspaces.com"
-    key                     = "terraform.tfstate"
-    bucket                  = "terraformstatesaves"
-    region                  = "us-west-1"
-    skip_requesting_account_id = true
-    skip_credentials_validation = true
-    skip_get_ec2_platforms = true
-    skip_metadata_api_check = true
-  }
-}
-
 resource "digitalocean_app" "yoko-test-api" {
   spec {
     name   = "yoko-test-api"
-    region = "fra"
+    region = "fra1"
     
     domain {
       name = "yoko.akashi23.me"
@@ -23,8 +10,33 @@ resource "digitalocean_app" "yoko-test-api" {
     }
 
     env {
-      key   = "PORT"
-      value = "8080"
+      key   = "POSTGRES_SERVER"
+      value =  "${digitalocean_database_cluster.postgres-cluster.host}:${digitalocean_database_cluster.postgres-cluster.port}"
+    }
+
+    env {
+      key   = "POSTGRES_USER"
+      value = digitalocean_database_cluster.postgres-cluster.user
+    }
+
+    env {
+      key   = "POSTGRES_PASSWORD"
+      value = digitalocean_database_cluster.postgres-cluster.password
+    }
+
+    env {
+      key   = "POSTGRES_DB"
+      value = digitalocean_database_cluster.postgres-cluster.database
+    }
+
+    env {
+      key   = "FIRST_SUPERUSER"
+      value = "admin@admin.com"
+    }
+
+    env {
+      key   = "FIRST_SUPERUSER_PASSWORD"
+      value = "postgres"
     }
 
     routes {
